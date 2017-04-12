@@ -30,6 +30,7 @@ include(poject_macros)
 include(gmock)
 find_package(Libnl REQUIRED)
 find_package(LibDBus-c++-1 REQUIRED)
+find_package(DBus REQUIRED)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
     "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -83,14 +84,15 @@ endif()
 
 set(DBUS_CONFIG_DIR "/etc/dbus-1/system.d/")
 set(CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/config)
-set(UDEV_RULES_DIR "/etc/udev/rules.d")
+set(UDEV_RULES_DIR "/usr/lib/udev/rules.d")
 set(DAEMON_INSTALL_DIR "/usr/lib/thunderbolt")
 
 find_package(PkgConfig)
 
 #pkg_check_modules(SYSTEMD QUIET "systemd")
-pkg_check_modules(DBUS QUIET "dbus-1")
-message(STATUS "Finding systemd and dbus")
+#pkg_check_modules(DBUS QUIET "dbus-1")
+pkg_check_modules(DBUS "dbus-1")
+message(STATUS "Finding dbus")
 #if (SYSTEMD_FOUND AND "${SYSTEMD_SERVICES_INSTALL_DIR}" STREQUAL "")
 #    execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE}
 #                    --variable=systemdsystemunitdir systemd
