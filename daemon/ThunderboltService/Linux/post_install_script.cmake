@@ -10,41 +10,44 @@ else()
     message(FATAL_ERROR "udev rule update failed\nResult - ${Result}\nOutput - ${Output}\nError - ${Error}")
 endif()
 
-#enable thunderbolt service
-execute_process(COMMAND systemctl enable thunderbolt
-                RESULT_VARIABLE Result
-                OUTPUT_VARIABLE Output
-                ERROR_VARIABLE  Error)
-
-if(Result EQUAL 0)
-    message(STATUS "enabling thunderbolt service done")
-else()
-    message(FATAL_ERROR "enabling thunderbolt service failed\nResult - ${Result}\nOutput - ${Output}\nError - ${Error}")
-endif()
-
-#reload systemd
-execute_process(COMMAND systemctl daemon-reload
-                RESULT_VARIABLE Result
-                OUTPUT_VARIABLE Output
-                ERROR_VARIABLE  Error)
-
-if(Result EQUAL 0)
-    message(STATUS "reload systemd done")
-else()
-    message(FATAL_ERROR "reload systemd failed\nResult - ${Result}\nOutput - ${Output}\nError - ${Error}")
-endif()
-
-#start thunderbolt daemon
-execute_process(COMMAND systemctl restart thunderbolt
-                RESULT_VARIABLE Result
-                OUTPUT_VARIABLE Output
-                ERROR_VARIABLE  Error)
-
-if(Result EQUAL 0)
-    message(STATUS "start thunderbolt daemon")
-else()
-    message(WARNING "start thunderbolt daemon failed\nResult - ${Result}\nOutput - ${Output}\nError - ${Error}")
-endif()
+#
+# Leave enabling and starting the service to the end user
+#
+##enable thunderbolt service
+#execute_process(COMMAND systemctl enable thunderbolt
+#                RESULT_VARIABLE Result
+#                OUTPUT_VARIABLE Output
+#                ERROR_VARIABLE  Error)
+#
+#if(Result EQUAL 0)
+#    message(STATUS "enabling thunderbolt service done")
+#else()
+#    message(FATAL_ERROR "enabling thunderbolt service failed\nResult - ${Result}\nOutput - ${Output}\nError - ${Error}")
+#endif()
+#
+##reload systemd
+#execute_process(COMMAND systemctl daemon-reload
+#                RESULT_VARIABLE Result
+#                OUTPUT_VARIABLE Output
+#                ERROR_VARIABLE  Error)
+#
+#if(Result EQUAL 0)
+#    message(STATUS "reload systemd done")
+#else()
+#    message(FATAL_ERROR "reload systemd failed\nResult - ${Result}\nOutput - ${Output}\nError - ${Error}")
+#endif()
+#
+##start thunderbolt daemon
+#execute_process(COMMAND systemctl restart thunderbolt
+#                RESULT_VARIABLE Result
+#                OUTPUT_VARIABLE Output
+#                ERROR_VARIABLE  Error)
+#
+#if(Result EQUAL 0)
+#    message(STATUS "start thunderbolt daemon")
+#else()
+#    message(WARNING "start thunderbolt daemon failed\nResult - ${Result}\nOutput - ${Output}\nError - ${Error}")
+#endif()
 
 message("
 /*******************************************************************************

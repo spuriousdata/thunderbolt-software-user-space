@@ -88,21 +88,21 @@ set(DAEMON_INSTALL_DIR "/usr/lib/thunderbolt")
 
 find_package(PkgConfig)
 
-pkg_check_modules(SYSTEMD QUIET "systemd")
+#pkg_check_modules(SYSTEMD QUIET "systemd")
 pkg_check_modules(DBUS QUIET "dbus-1")
 message(STATUS "Finding systemd and dbus")
-if (SYSTEMD_FOUND AND "${SYSTEMD_SERVICES_INSTALL_DIR}" STREQUAL "")
-    execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE}
-                    --variable=systemdsystemunitdir systemd
-                    OUTPUT_VARIABLE SYSTEMD_SERVICES_INSTALL_DIR)
-    #remove space, tabs and newline and place output on DBUS_SERVICES_INSTALL_DIR variable
-    string(REGEX REPLACE "[ \t\n]+" "" SYSTEMD_SERVICES_INSTALL_DIR
-           "${SYSTEMD_SERVICES_INSTALL_DIR}")
-elseif (NOT SYSTEMD_FOUND AND SYSTEMD_SERVICES_INSTALL_DIR)
-    message(FATAL_ERROR
-            "Variable SYSTEMD_SERVICES_INSTALL_DIR is defined, but we can't \
-            find systemd using pkg-config")
-endif()
+#if (SYSTEMD_FOUND AND "${SYSTEMD_SERVICES_INSTALL_DIR}" STREQUAL "")
+#    execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE}
+#                    --variable=systemdsystemunitdir systemd
+#                    OUTPUT_VARIABLE SYSTEMD_SERVICES_INSTALL_DIR)
+#    #remove space, tabs and newline and place output on DBUS_SERVICES_INSTALL_DIR variable
+#    string(REGEX REPLACE "[ \t\n]+" "" SYSTEMD_SERVICES_INSTALL_DIR
+#           "${SYSTEMD_SERVICES_INSTALL_DIR}")
+#elseif (NOT SYSTEMD_FOUND AND SYSTEMD_SERVICES_INSTALL_DIR)
+#    message(FATAL_ERROR
+#            "Variable SYSTEMD_SERVICES_INSTALL_DIR is defined, but we can't \
+#            find systemd using pkg-config")
+#endif()
 
 if (DBUS_FOUND AND "${DBUS_SERVICES_INSTALL_DIR}" STREQUAL "")
     execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE}
@@ -117,17 +117,17 @@ elseif (NOT DBUS_FOUND AND DBUS_SERVICES_INSTALL_DIR)
             dbus using pkg-config")
 endif()
 
-if (SYSTEMD_FOUND)
-    message(STATUS "SYSTEMD_SERVICES_INSTALL_DIR: ${SYSTEMD_SERVICES_INSTALL_DIR}")
-endif()
+#if (SYSTEMD_FOUND)
+#    message(STATUS "SYSTEMD_SERVICES_INSTALL_DIR: ${SYSTEMD_SERVICES_INSTALL_DIR}")
+#endif()
 
 if (DBUS_FOUND)
     message(STATUS "DBUS_SERVICES_INSTALL_DIR: ${DBUS_SERVICES_INSTALL_DIR}")
 endif()
 
 
-if(SYSTEMD_FOUND AND DBUS_FOUND)
-    install(FILES ${CONFIG_DIR}/thunderbolt.service DESTINATION ${SYSTEMD_SERVICES_INSTALL_DIR})
+if(DBUS_FOUND)
+	#install(FILES ${CONFIG_DIR}/thunderbolt.service DESTINATION ${SYSTEMD_SERVICES_INSTALL_DIR})
     install(FILES ${CONFIG_DIR}/com.Intel.Thunderbolt.service DESTINATION ${DBUS_SERVICES_INSTALL_DIR})
     install(FILES ${CONFIG_DIR}/thunderbolt.conf DESTINATION ${DBUS_CONFIG_DIR})
     install(FILES ${CONFIG_DIR}/10-thunderbolt.rules DESTINATION ${UDEV_RULES_DIR})
@@ -135,7 +135,7 @@ if(SYSTEMD_FOUND AND DBUS_FOUND)
     install(SCRIPT post_install_script.cmake)
 else()
     message(WARNING
-            "Can't install Thunderbolt daemon because systemd or dbus couldn't be found")
+            "Can't install Thunderbolt daemon because dbus couldn't be found")
 endif()
 
 set(CPACK_PACKAGE_VERSION ${VERSION})
